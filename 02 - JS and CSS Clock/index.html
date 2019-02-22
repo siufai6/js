@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+
+<body>
+
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand hour-hand"></div>
+      <div class="hand min-hand"></div>
+      <div class="hand second-hand"></div>
+    </div>
+  </div>
+
+
+  <style>
+    html {
+      background: #018DED url(http://unsplash.it/1500/1000?image=881&blur=50);
+      background-size: cover;
+      font-family: 'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      flex: 1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border: 20px solid white;
+      border-radius: 50%;
+      margin: 50px auto;
+      position: relative;
+      padding: 2rem;
+      box-shadow:
+        0 0 0 4px rgba(0, 0, 0, 0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px);
+      /* account for the height of the clock hands */
+    }
+
+    .hand {
+      width: 50%;
+      height: 6px;
+      background: black;
+      position: absolute;
+      top: 50%;
+      transform: rotate(90deg);
+      transform-origin: 100%;
+      transition: all .05;
+      transition-timing-function:cubic-bezier(0.55, 0.085, 0.68, 0.53); 
+    }
+
+    .clock-face:after {
+      width: .8em;
+      height: .8em;
+      left: 50%;
+      top: 50%;
+      position: absolute;
+      display: block;
+      transform: translate(-50%, -50%);
+      content: '';
+      background-color: #a8c5d1;
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 2px rgba(0, 0, 0, 0.1),
+        0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .hour-hand {
+      height: 20%;
+      left: 48.75%;
+      position: absolute;
+      top: 30%;
+      transform-origin: 50% 100%;
+      width: 2.5%;
+    }
+
+    .min-hand {
+      height: 40%;
+      width: 45%;
+      left: 49%;
+      position: absolute;
+      top: 10%;
+      transform-origin: 50% 100%;
+      width: 2%;
+    }
+
+    .second-hand {
+      background: red;
+      height: 2px;
+      height: 45%;
+      left: 49.5%;
+      position: absolute;
+      top: 14%;
+      transform-origin: 50% 80%;
+      width: 1%;
+      z-index: 8;
+    }
+  </style>
+
+
+
+  <script>
+    const to_angle = (mmss) => mmss*6;
+    const to_hour_angle = (hh, mm) => hh*30 + mm/2;
+    var t = setInterval(updt_clock, 1000);
+
+    function updt_clock() {
+      var now = new Date();
+      var ss = to_angle(now.getSeconds());
+      var mm = to_angle(now.getMinutes(), 60);
+      var hh = to_hour_angle(now.getHours(), now.getMinutes());
+      document.querySelector('.second-hand').style.transform = `rotate(${ss}deg)`;
+      document.querySelector('.min-hand').style.transform = `rotate(${mm}deg)`;
+      document.querySelector('.hour-hand').style.transform = `rotate(${hh}deg)`;
+    }
+
+  </script>
+</body>
+
+</html>
