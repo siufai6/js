@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+const suggestions = document.querySelector('.suggestions');
+const search_input = document.querySelector(".search-form input");
+var data='';
+
+fetch(endpoint)
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+    data=myJson;
+    console.log(data);
+  });
+  
+search_input.addEventListener("keyup", do_search);
+search_input.addEventListener("change", do_search);
+
+
+function do_search(e){
+  console.log(this.value);
+  filtered = data.filter((j)=> {
+      return j.city.includes(this.value) || j.state.includes(this.value);
+      });
+  console.log(filtered); 
+
+  var updated_list='';   
+  filtered.forEach(l => {
+    console.log(l.city);
+    updated_list += ('<li>'+l.city+', '+ l.state+'</li>');
+
+  });
+  suggestions.innerHTML = updated_list;
+}
+
+</script>
+</body>
+</html>
