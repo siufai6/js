@@ -32,18 +32,23 @@ fetch(endpoint)
 search_input.addEventListener("keyup", do_search);
 search_input.addEventListener("change", do_search);
 
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 function do_search(e){
   console.log(this.value);
   filtered = data.filter((j)=> {
-      return j.city.includes(this.value) || j.state.includes(this.value);
+      const val = this.value.toUpperCase();
+      return j.city.toUpperCase().includes(val) || j.state.includes(val);
       });
   console.log(filtered); 
 
   var updated_list='';   
   filtered.forEach(l => {
     console.log(l.city);
-    updated_list += ('<li>'+l.city+', '+ l.state+'</li>');
+    updated_list += ('<li>'+l.city+', '+ l.state
+        +'<span class="population">'+numberWithCommas(l.population)+'</span></li>');
 
   });
   suggestions.innerHTML = updated_list;
